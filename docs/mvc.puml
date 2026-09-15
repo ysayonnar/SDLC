@@ -1,0 +1,30 @@
+@startuml
+!pragma layout smetana
+skinparam classAttributeIconSize 0
+
+class App
+class MorseController {
+  - model: MorseDecoderModel
+  - view: MainView
+  - enterData()
+}
+class MorseDecoderModel <<active model>> {
+  - state: DecoderState
+  + decode(source, alphabet)
+  + addPropertyChangeListener(listener)
+}
+class MainView <<view>> {
+  + requestInput(state): InputData
+  + propertyChange(event)
+  + showError(message)
+}
+class InputDialog
+class DecoderState
+
+App --> MorseController
+MorseController --> MorseDecoderModel : changes
+MorseController --> MainView : handles actions
+MorseDecoderModel --> MainView : PropertyChangeEvent
+MorseDecoderModel *-- DecoderState
+MainView ..> InputDialog
+@enduml

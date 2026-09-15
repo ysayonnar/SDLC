@@ -1,0 +1,11 @@
+/build/
+/.idea/
+*.iml
+.DS_Store
+.codex_build_report.py
+.codex_py/
+.codex_render_docx.py
+.codex_render_pdf.swift
+.report_v16.rtf
+out/
+
