@@ -1,0 +1,25 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam BackgroundColor white
+title Отметить сегодня UC-06
+start
+:PUT с expectedDate;
+:Проверить сессию, CSRF и владельца;
+if (Доступ разрешён?) then (Да)
+ :today = Clock Europe/Minsk ровно один раз;
+ if (expectedDate = today?) then (Да)
+  :Транзакция; блокировка Habit;
+  :Вставить дату без дубликата;
+  :UC-11 Рассчитать прогресс;
+  :commit; 200; заменить снимок UI;
+ else (Нет)
+  :409 DAY_CHANGED;
+  :GET списка без автоматического повтора;
+ endif
+else (Нет)
+ :401 / 403 / 404; без изменений;
+endif
+stop
+@enduml
