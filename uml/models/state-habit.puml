@@ -1,0 +1,14 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+state "Нет отметки за дату d" as Empty
+state "Есть отметка за дату d" as Done
+state "Привычка удалена" as Deleted
+[*] --> Empty : создать
+Empty --> Done : отметить [дата верна]
+Done --> Empty : отменить [дата верна]
+Empty --> Deleted : удалить
+Done --> Deleted : удалить
+Deleted --> [*]
+@enduml

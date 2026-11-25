@@ -1,0 +1,21 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+start
+:Запрос отметки;
+:Проверить доступ;
+if (Доступ разрешён?) then (Да)
+ :Определить дату;
+ if (Дата совпадает?) then (Да)
+  :Записать отметку;
+  :Рассчитать прогресс;
+  :Зафиксировать и показать;
+ else (Нет)
+  :Обновить список;
+ endif
+else (Нет)
+ :Отказ 401 / 403 / 404;
+endif
+stop
+@enduml

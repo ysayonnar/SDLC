@@ -1,0 +1,20 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+start
+repeat
+ :Ввод названия;
+ if (Сессия и CSRF?) then (Да)
+ else (Нет)
+  :Отказ 401 / 403;
+  stop
+ endif
+ if (Имя некорректно?) then (Да)
+  :Ошибка имени;
+ endif
+repeat while (Имя некорректно?) is (Да) not (Нет)
+:Сохранить привычку;
+:Показать привычку;
+stop
+@enduml

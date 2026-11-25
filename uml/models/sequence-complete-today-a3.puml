@@ -1,0 +1,20 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+actor Пользователь as U
+participant "React" as UI
+participant "Java API" as API
+database "PostgreSQL" as DB
+U -> UI ++ : 1 Нажать «Выполнено»
+UI -> API ++ : 2 Отметить(expectedDate)
+API -> DB ++ : 3 Найти и заблокировать
+DB --> API -- : 4 Привычка
+API -> DB ++ : 5 Записать и прочитать даты
+DB --> API -- : 6 Даты отметок
+API -> API : 7 Рассчитать прогресс
+API -> DB ++ : 8 Подтвердить транзакцию
+DB --> API -- : 9 Подтверждено
+API --> UI -- : 10 Прогресс
+UI --> U -- : 11 Обновлённый экран
+@enduml
