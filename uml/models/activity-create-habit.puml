@@ -2,29 +2,19 @@
 skinparam monochrome true
 skinparam shadowing false
 skinparam defaultFontName Arial
-skinparam BackgroundColor white
-title Создание привычки UC-03
-|Пользователь|
 start
-:Нажать Новая привычка;
-|Система|
-:Показать форму;
-|Пользователь|
-:Ввести имя и сохранить;
-|Система|
-if (Сессия и CSRF?) then (Да)
- while (Имя неверно BR-03?) is (Да)
-  :Показать ошибку;
-  |Пользователь|
-  :Исправить имя;
-  |Система|
- endwhile (Нет)
- :Сохранить Habit с ownerId из сессии;
- :commit; вернуть 201;
- |Пользователь|
- :Увидеть привычку;
-else (Нет)
- :401 / 403; без записи;
-endif
+repeat
+ :Ввод названия;
+ if (Сессия и CSRF?) then (Да)
+ else (Нет)
+  :Отказ 401 / 403;
+  stop
+ endif
+ if (Имя некорректно?) then (Да)
+  :Ошибка имени;
+ endif
+repeat while (Имя некорректно?) is (Да) not (Нет)
+:Сохранить привычку;
+:Показать привычку;
 stop
 @enduml

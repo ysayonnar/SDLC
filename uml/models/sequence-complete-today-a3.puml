@@ -2,39 +2,19 @@
 skinparam monochrome true
 skinparam shadowing false
 skinparam defaultFontName Arial
-skinparam BackgroundColor white
 actor Пользователь as U
-participant ":HabitController" as C
-participant ":CompletionService" as S
-participant ":HabitRepository" as R
-database PostgreSQL as DB
-U -> C : PUT completion/today(expectedDate)
-activate C
-C -> C : session, CSRF, validation
-C -> S : complete(id, ownerId, expectedDate)
-activate S
-S -> R : findOwnedForUpdate(id, ownerId)
-activate R
-R --> S : habit / not found
-deactivate R
-note over S : today из Clock ровно один раз
-alt нет доступа или дата устарела
- S --> C : NotFound / DayChanged
- C --> U : 404 / 409; без изменений
-else владелец и дата корректны
- S -> R : insertTodayIfAbsent(habit, today)
- activate R
- R -> DB : INSERT ON CONFLICT DO NOTHING
- activate DB
- DB --> R : 0 или 1 строка
- deactivate DB
- R --> S : сохранено в транзакции
- deactivate R
- ref over S, DB : UC-11 — согласованный прогресс
-S --> C : commit; ProgressSnapshot
-C --> U : 200; снимок
-end
-deactivate S
-deactivate C
-note over S, DB : SQL-ошибка: rollback, HTTP 500
+participant "React" as UI
+participant "Java API" as API
+database "PostgreSQL" as DB
+U -> UI ++ : 1 Нажать «Выполнено»
+UI -> API ++ : 2 Отметить(expectedDate)
+API -> DB ++ : 3 Найти и заблокировать
+DB --> API -- : 4 Привычка
+API -> DB ++ : 5 Записать и прочитать даты
+DB --> API -- : 6 Даты отметок
+API -> API : 7 Рассчитать прогресс
+API -> DB ++ : 8 Подтвердить транзакцию
+DB --> API -- : 9 Подтверждено
+API --> UI -- : 10 Прогресс
+UI --> U -- : 11 Обновлённый экран
 @enduml

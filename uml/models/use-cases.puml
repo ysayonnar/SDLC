@@ -19,16 +19,16 @@ usecase "UC-09 Экспортировать CSV" as UC09
 usecase "UC-10 Выйти из системы" as UC10
 usecase "UC-11 Рассчитать серии и очки" as UC11
 }
-Guest --> UC01
-Guest --> UC02
-User --> UC03
-User --> UC04
-User --> UC05
-User --> UC06
-User --> UC07
-User --> UC08
-User --> UC09
-User --> UC10
+Guest -- UC01
+Guest -- UC02
+User -- UC03
+User -- UC04
+User -- UC05
+User -- UC06
+User -- UC07
+User -- UC08
+User -- UC09
+User -- UC10
 UC05 ..> UC11 : <<include>>
 UC06 ..> UC11 : <<include>>
 UC07 ..> UC11 : <<include>>
