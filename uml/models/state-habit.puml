@@ -1,0 +1,25 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam BackgroundColor white
+title Habit — состояние относительно serverDate
+[*] --> Active : create / сохранить Habit
+state Active {
+ [*] --> Unmarked
+ state "Не отмечена сегодня" as Unmarked
+ state "Отмечена сегодня" as Marked
+ Unmarked --> Marked : PUT [дата верна] / вставить today
+ Marked --> Unmarked : DELETE [дата верна] / удалить today
+ Unmarked --> Unmarked : DELETE / без изменений
+ Marked --> Marked : PUT / без дубля
+ Marked --> Unmarked : GET [новый день] / сменить проекцию
+}
+Active : rename / изменить только name
+Active --> Deleted : deleteHabit / каскадно удалить D
+Deleted --> [*]
+note bottom of Active
+История хранится независимо от serverDate.
+Ошибки доступа и даты не меняют состояние.
+end note
+@enduml
